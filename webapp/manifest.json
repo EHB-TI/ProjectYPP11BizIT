@@ -41,9 +41,15 @@
 		"dependencies": {
 			"minUI5Version": "1.65.6",
 			"libs": {
-				"sap.ui.layout": {},
+				"sap.fiori": {
+					"minVersion": ""
+				},
+				"sap.m": {},
 				"sap.ui.core": {},
-				"sap.m": {}
+				"sap.ui.layout": {},
+				"sap.ui.unified": {
+					"minVersion": ""
+				}
 			}
 		},
 		"contentDensities": {
@@ -64,9 +70,11 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -78,11 +86,15 @@
 				"controlId": "app",
 				"clearControlAggregation": false
 			},
-			"routes": [{
-				"name": "Homepage",
-				"pattern": "",
-				"target": ["Homepage"]
-			}],
+			"routes": [
+				{
+					"name": "Homepage",
+					"pattern": "",
+					"target": [
+						"Homepage"
+					]
+				}
+			],
 			"targets": {
 				"TargetApp": {
 					"viewType": "XML",
