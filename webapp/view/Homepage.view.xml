@@ -1,0 +1,23 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:u="sap.ui.unified"
+	controllerName="ProjectYPP11BizIT.ProjectYPP11BizIT.controller.Homepage" xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page title="Title">
+				<content>
+					<u:FileUploader id="fileUploader" name="myFileUpload" change="onpresschange" tooltip="Upload your file to the local server"/>
+					<Button text="Upload File" press="handleUploadPress"/>
+					<t:Table rows="{FileModel>/lines}" selectionMode="MultiToggle" visibleRowCount="7" paste="onPaste" ariaLabelledBy="title">
+						<t:columns>
+							<t:Column width="12rem">
+								<Label text="Main Category"/>
+								<t:template>
+									<Text text="{FileModel>header1}"></Text>
+								</t:template>
+							</t:Column>
+						</t:columns>
+					</t:Table>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
