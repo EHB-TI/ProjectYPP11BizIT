@@ -13,6 +13,9 @@ sap.ui.define([
 		onInit: function () {
 
 		},
+		getModel: function (sName) {
+			return this.getOwnerComponent().getModel(sName);
+		},
 
 		onpresschange: function (oEvent) {
 			var sFilename = oEvent.getParameter("newValue");
@@ -21,53 +24,68 @@ sap.ui.define([
 		},
 
 		setup_table: function (file) {
+			console.log("setup_table has been loaded!");
 			var name = file.name;
+			console.log(name);
 			var reader = new FileReader();
 			var that = this;
 
 			reader.onload = function (e) {
+				debugger;
 				var bin = e.target.result; // haal resultaat op van file upload
 				var array = bin.split("\t"); // split files in een array van objecten
-
 				/* Veranderd array van strings in array van objecten
 				array = array.map(value => ({
 					value
 				}));*/
-
 				// Array van objecten -> FileModel steken
-				var oLine = new sap.ui.model.json.JSONModel();
-				oLine.setData(array);
-				sap.ui.getCore().setModel(oLine);
-
-				var oData = new sap.m.Select({ // Hier gaat het mis !
-					items: {
-						path: '/oData',
-						sorter: {
-							path: '0'
-						}
-					}
-				});
-
-				// 	debugger;
+				console.log("Array: " + array);
 
 				var aLines = [];
-				//var oLine = {
-				//	header1: "test"
-				//};
-				for (var object in oData) {
-					aLines.push(object);
-				}
-				that.onLoadFileModel(aLines);
-			};
-			reader.readAsBinaryString(file);
-		},
 
+				if (name === "SCHEDULE_LINE_DATA.txt") {
+					console.log("Schedule line data detected!");
+					for (var objSL in array) {
+						var oLineScheduleLine = {
+							header1: objSL //.TEST
+						};
+						aLines.push(oLineScheduleLine);
+					}
+					that.getView().getModel("FileModel").setData(aLines);
+					// oLine.setData(array);
+					that.onLoadFileModel(aLines);
+				} else if (name === "ITEM_DATA.txt") {
+					console.log("Item data detected!");
+					for (var objI in array) {
+						var oLineItem = {
+							header1: objI //.TEST
+						};
+						aLines.push(oLineItem);
+					}
+					that.getView().getModel("FileModel").setData(aLines);
+					// oLine.setData(array);
+					that.onLoadFileModel(aLines);
+				} else if (name === "SESSION_RECORD.txt") {
+					console.log("Session record data detected!");
+					for (var objS in array) {
+						var oLineSeshRec = {
+							header1: objS //.TEST
+						};
+						aLines.push(oLineSeshRec);
+					}
+					that.getView().getModel("FileModel").setData(aLines);
+					//	oLine.setData(array);
+					that.onLoadFileModel(aLines);
+				}
+			};
+			reader.readAsText(file);
+		},
 		// Verwijzen naar onLoadFileModel onder property lines
 		onLoadFileModel: function (aLines) {
 			this.getView().getModel("FileModel").setProperty("/lines", aLines);
-		},
+		}
 
-		onUploadSelectedButton: function () {
+		/*onUploadSelectedButton: function () {
 			var oUploadSet = this.byId("UploadSet");
 
 			oUploadSet.getItems().forEach(function (oItem) {
@@ -85,6 +103,6 @@ sap.ui.define([
 					oItem.download(true);
 				}
 			});
-		}
+		}*/
 	});
 });

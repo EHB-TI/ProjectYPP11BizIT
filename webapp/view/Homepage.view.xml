@@ -2,7 +2,7 @@
 	controllerName="ProjectYPP11BizIT.ProjectYPP11BizIT.controller.Homepage" xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
-			<Page title="Title">
+			<Page title="Title" showHeader="false">
 				<content>
 					<u:FileUploader id="fileUploader" name="myFileUpload" change="onpresschange" tooltip="Upload your file to the local server"/>
 					<Button text="Upload File" press="handleUploadPress"/>
