@@ -46,13 +46,12 @@ sap.ui.define([
 				if (name === "SCHEDULE_LINE_DATA.txt") {
 					console.log("Schedule line data detected!");
 					for (var objSL in array) {
-						var oLineScheduleLine = {
+						var oLineScheduleLine1 = {
 							header1: objSL //.TEST
 						};
-						aLines.push(oLineScheduleLine);
+						aLines.push(oLineScheduleLine1);
 					}
 					that.getView().getModel("FileModel").setData(aLines);
-					// oLine.setData(array);
 					that.onLoadFileModel(aLines);
 				} else if (name === "ITEM_DATA.txt") {
 					console.log("Item data detected!");
@@ -63,7 +62,6 @@ sap.ui.define([
 						aLines.push(oLineItem);
 					}
 					that.getView().getModel("FileModel").setData(aLines);
-					// oLine.setData(array);
 					that.onLoadFileModel(aLines);
 				} else if (name === "SESSION_RECORD.txt") {
 					console.log("Session record data detected!");
