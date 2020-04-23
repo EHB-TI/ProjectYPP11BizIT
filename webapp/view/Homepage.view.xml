@@ -2,16 +2,64 @@
 	controllerName="ProjectYPP11BizIT.ProjectYPP11BizIT.controller.Homepage" xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
-			<Page title="Title" showHeader="false">
+			<Page title="Title" showHeader="false" class="css">
 				<content>
-					<u:FileUploader id="fileUploader" name="myFileUpload" change="onpresschange" tooltip="Upload your file to the local server"/>
-					<Button text="Upload File" press="handleUploadPress"/>
+					<u:FileUploader id="fileUploader" class="form" name="myFileUpload" change="onpresschange" tooltip="Upload your file"/>
+					<Button text="Upload File" press="handleUploadPress" class="myCustomButton form"/>
 					<t:Table rows="{FileModel>/lines}" selectionMode="MultiToggle" visibleRowCount="7" paste="onPaste" ariaLabelledBy="title">
 						<t:columns>
-							<t:Column width="12rem">
-								<Label text="Main Category"/>
+							<t:Column>
+								<Label class="label"/>
 								<t:template>
-									<Text text="{FileModel>header1}"></Text>
+									<Text text="{FileModel>header1}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header2}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header3}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header4}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header5}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header6}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header7}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header8}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
+								</t:template>
+							</t:Column>
+							<t:Column>
+								<Label class="label"/>
+								<t:template>
+									<Text text="{FileModel>header9}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
 						</t:columns>
