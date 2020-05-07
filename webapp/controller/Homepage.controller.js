@@ -32,18 +32,16 @@ sap.ui.define([
 
 			reader.onload = function (e) {
 				var bin = e.target.result; // haal resultaat op van file upload
-				var array = bin.split("\t"); // split files in een array van objecten
-				// 		for (var z = 0; z < array.length; z++) {
-				// 		array[z].split(/\n/g).join("");
-				// 	}
-
-				console.log("Array: " + array);
+				var valid1 = bin.split("\t"); // split files in een array van objecten
+				// for each?
+				var valid = valid1.split("\r\n")
+				console.log("Dirty values cleaned from array!");
+				console.log("Validated array: " + valid);
 
 				var aLines = [];
 				var titleArray = [];
 				var headerTitles = document.getElementsByClassName("label");
 				var headerBox = document.querySelectorAll("td>div>div");
-				console.log(headerBox);
 
 				if (name === "SCHEDULE_LINE_DATA.txt") {
 					console.log("Schedule line data detected!");
@@ -55,46 +53,40 @@ sap.ui.define([
 						headerTitles[i1].innerHTML = titleArray[i1];
 						// headerBox[i1].setAttribute("style", "width: 100%!important");
 					}
-					var oLineScheduleLine1 = {
-						header1: array[0],
-						header2: array[1],
-						header3: array[2],
-						header4: array[3],
-						header5: array[4],
+
+					var oLineFirst = {
+						header1: valid[0],
+						header2: valid[1],
+						header3: valid[2],
+						header4: valid[3],
+						header5: valid[4],
 						header6: "",
 						header7: "",
 						header8: "0"
 					};
-					for (var headera in oLineScheduleLine1) {
-						console.log("Before: " + oLineScheduleLine1[headera]);
-						oLineScheduleLine1[headera].split(/\n/g).join("");
-						console.log("After: " + oLineScheduleLine1[headera]);
-					}
-					console.log(oLineScheduleLine1);
-					aLines.push(oLineScheduleLine1);
+					console.log("Clean headers in object oLineFirst: " + oLineFirst);
+					aLines.push(oLineFirst);
 
-					for (var vakje = 7; vakje < array.length; vakje++) {
-						var oLineScheduleLine2 = {
-							header1: array[vakje],
-							header2: array[vakje + 1],
-							header3: array[vakje + 2],
-							header4: array[vakje + 3],
-							header5: array[vakje + 4],
-							header6: "",
-							header7: "",
-							header8: array[vakje + 7]
+					var counter = 7;
+					do {
+						var oLine = {
+							header1: valid[counter],
+							header2: valid[counter + 1],
+							header3: valid[counter + 2],
+							header4: valid[counter + 3],
+							header5: valid[counter + 4],
+							header6: valid[counter + 5],
+							header7: valid[counter + 6],
+							header8: valid[counter + 7]
 						};
-						for (var headerb in oLineScheduleLine1) {
-							console.log("Before: " + oLineScheduleLine1[headerb]);
-							oLineScheduleLine1[headerb].split(/\n/g).join("");
-							console.log("After: " + oLineScheduleLine1[headerb]);
-						}
-						console.log(oLineScheduleLine2);
-						aLines.push(oLineScheduleLine2);
-					}
+						console.log("[#] Current loop iteration: " + counter / 7);
+						counter = counter + 7;
+						aLines.push(oLine);
+					} while (valid.length > counter);
 
 					that.getView().getModel("FileModel").setData(aLines);
 					that.onLoadFileModel(aLines);
+
 				} else if (name === "ITEM_DATA.txt") {
 					console.log("Item data detected!");
 					titleArray = ["Batch Input Interface Record Type", "Material Number", "Requirements type",
