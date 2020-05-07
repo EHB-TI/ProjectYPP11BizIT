@@ -32,9 +32,9 @@ sap.ui.define([
 
 			reader.onload = function (e) {
 				var bin = e.target.result; // haal resultaat op van file upload
-				var valid1 = bin.split("\t"); // split files in een array van objecten
+				var valid = bin.split("\t"); // split files in een array van objecten
 				// for each?
-				var valid = valid1.split("\r\n")
+				// var valid = valid1.split("\r\n")
 				console.log("Dirty values cleaned from array!");
 				console.log("Validated array: " + valid);
 
