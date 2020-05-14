@@ -1,5 +1,5 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller"
+	"sap/ui/core/mvc/Controller",
 ], function (Controller) {
 	"use strict";
 
@@ -17,7 +17,7 @@ sap.ui.define([
 		},
 
 		onpresschange: function (oEvent) {
-			var sFilename = oEvent.getParameter("newValue");
+			// var sFilename = oEvent.getParameter("newValue");
 			var oFile = oEvent.getParameter("files")[0];
 			this.setup_table(oFile);
 		},
@@ -27,7 +27,6 @@ sap.ui.define([
 			console.log(name);
 			var reader = new FileReader();
 			var that = this;
-			debugger;
 			reader.onload = function (e) {
 				var bin = e.target.result; // haal resultaat op van file upload
 				var array = bin.split("\t"); // split files in een array van objecten
@@ -35,7 +34,7 @@ sap.ui.define([
 				var aLines = [];
 				var titleArray = [];
 				var headerTitles = document.getElementsByClassName("label");
-				var headerBox = document.querySelectorAll("td>div>div");
+				// var headerBox = document.querySelectorAll("td>div>div");
 
 				if (name === "SCHEDULE_LINE_DATA.txt") {
 					console.log("Schedule line data detected!");
@@ -78,22 +77,20 @@ sap.ui.define([
 								header8: array[counter + 7]
 							}
 						};
-						debugger;
-
 						console.log("[#] Current loop iteration: " + counter / 7);
 						counter = counter + 7;
 
-						var newline0 = "\r\n";
-						var newline1 = "\u2029";
-						var newline2 = "\u000a";
-						var newline3 = "\u2028";
+						// var newline0 = "\r\n";
+						// var newline1 = "\u2029";
+						// var newline2 = "\u000a";
+						// var newline3 = "\u2028";
 
-						for (var d = 0; d < 8; d++) {
-							if (oLines.headers[d].includes(newline0) || oLines.headers[d].includes(newline1) ||
-								oLines.headers[d].includes(newline2) || oLines.headers[d].includes(newline3)) {
-								oLines.headers[d] = "GOTCHA!";
-							}
-						}
+						// for (var d = 0; d < 8; d++) {
+						// 	if (oLines.headers[d].includes(newline0) || oLines.headers[d].includes(newline1) ||
+						// 		oLines.headers[d].includes(newline2) || oLines.headers[d].includes(newline3)) {
+						// 		oLines.headers[d] = "GOTCHA!";
+						// 	}
+						// }
 
 						console.log("Cleaned oLines -> " + oLines.headers + " - Now pushing to aLines!");
 						aLines.push(oLines.headers);
