@@ -4,7 +4,6 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("ProjectYPP11BizIT.ProjectYPP11BizIT.controller.Homepage", {
-
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -22,22 +21,17 @@ sap.ui.define([
 			var oFile = oEvent.getParameter("files")[0];
 			this.setup_table(oFile);
 		},
-
 		setup_table: function (file) {
 			console.log("setup_table has been loaded!");
 			var name = file.name;
 			console.log(name);
 			var reader = new FileReader();
 			var that = this;
-
+			debugger;
 			reader.onload = function (e) {
 				var bin = e.target.result; // haal resultaat op van file upload
-				var valid = bin.split("\t"); // split files in een array van objecten
-				// for each?
-				// var valid = valid1.split("\r\n")
-				console.log("Dirty values cleaned from array!");
-				console.log("Validated array: " + valid);
-
+				var array = bin.split("\t"); // split files in een array van objecten
+				console.log("Validated array: " + array);
 				var aLines = [];
 				var titleArray = [];
 				var headerTitles = document.getElementsByClassName("label");
@@ -54,36 +48,57 @@ sap.ui.define([
 						// headerBox[i1].setAttribute("style", "width: 100%!important");
 					}
 
+					// Row [#1]
 					var oLineFirst = {
-						header1: valid[0],
-						header2: valid[1],
-						header3: valid[2],
-						header4: valid[3],
-						header5: valid[4],
-						header6: "",
-						header7: "",
-						header8: "0"
+						"headers": {
+							header1: array[0],
+							header2: array[1],
+							header3: array[2],
+							header4: array[3],
+							header5: array[4],
+							header6: "",
+							header7: "",
+							header8: "0"
+						}
 					};
-					console.log("Clean headers in object oLineFirst: " + oLineFirst);
-					aLines.push(oLineFirst);
+					aLines.push(oLineFirst.headers);
 
+					// Rows [#2-...]
 					var counter = 7;
 					do {
-						var oLine = {
-							header1: valid[counter],
-							header2: valid[counter + 1],
-							header3: valid[counter + 2],
-							header4: valid[counter + 3],
-							header5: valid[counter + 4],
-							header6: valid[counter + 5],
-							header7: valid[counter + 6],
-							header8: valid[counter + 7]
+						var oLines = {
+							"headers": {
+								header1: array[counter],
+								header2: array[counter + 1],
+								header3: array[counter + 2],
+								header4: array[counter + 3],
+								header5: array[counter + 4],
+								header6: array[counter + 5],
+								header7: array[counter + 6],
+								header8: array[counter + 7]
+							}
 						};
+						debugger;
+
 						console.log("[#] Current loop iteration: " + counter / 7);
 						counter = counter + 7;
-						aLines.push(oLine);
-					} while (valid.length > counter);
 
+						var newline0 = "\r\n";
+						var newline1 = "\u2029";
+						var newline2 = "\u000a";
+						var newline3 = "\u2028";
+
+						for (var d = 0; d < 8; d++) {
+							if (oLines.headers[d].includes(newline0) || oLines.headers[d].includes(newline1) ||
+								oLines.headers[d].includes(newline2) || oLines.headers[d].includes(newline3)) {
+								oLines.headers[d] = "GOTCHA!";
+							}
+						}
+
+						console.log("Cleaned oLines -> " + oLines.headers + " - Now pushing to aLines!");
+						aLines.push(oLines.headers);
+					}
+					while (array.length > counter);
 					that.getView().getModel("FileModel").setData(aLines);
 					that.onLoadFileModel(aLines);
 
