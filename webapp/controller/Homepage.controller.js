@@ -1,5 +1,5 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
+	"sap/ui/core/mvc/Controller"
 ], function (Controller) {
 	"use strict";
 
@@ -17,24 +17,26 @@ sap.ui.define([
 		},
 
 		onpresschange: function (oEvent) {
-			// var sFilename = oEvent.getParameter("newValue");
-			var oFile = oEvent.getParameter("files")[0];
+			// let sFilename = oEvent.getParameter("newValue");
+			let oFile = oEvent.getParameter("files")[0];
 			this.setup_table(oFile);
 		},
 		setup_table: function (file) {
 			console.log("setup_table has been loaded!");
-			var name = file.name;
+			let name = file.name;
 			console.log(name);
-			var reader = new FileReader();
-			var that = this;
+			let reader = new FileReader();
+			let that = this;
 			reader.onload = function (e) {
-				var bin = e.target.result; // haal resultaat op van file upload
-				var array = bin.split("\t"); // split files in een array van objecten
-				console.log("Validated array: " + array);
-				var aLines = [];
-				var titleArray = [];
-				var headerTitles = document.getElementsByClassName("label");
-				// var headerBox = document.querySelectorAll("td>div>div");
+				let bin = e.target.result; // haal resultaat op van file upload
+				console.log("Bin: " + bin);
+				let array = bin.split("\n"); // split files in een array van objecten
+				console.log("Array: " + array);
+
+				let aLines = [];
+				let titleArray = [];
+				let headerTitles = document.getElementsByClassName("label");
+				// let headerBox = document.querySelectorAll("td>div>div");
 
 				if (name === "SCHEDULE_LINE_DATA.txt") {
 					console.log("Schedule line data detected!");
@@ -42,60 +44,33 @@ sap.ui.define([
 						"Schedule line date", "Planned quantity batch input", "BOM explosion number", "Production Version",
 						"Offset for generation of test data"
 					];
-					for (var i1 = 0; i1 < titleArray.length; i1++) {
+					for (let i1 = 0; i1 < titleArray.length; i1++) {
 						headerTitles[i1].innerHTML = titleArray[i1];
 						// headerBox[i1].setAttribute("style", "width: 100%!important");
 					}
-
-					// Row [#1]
-					var oLineFirst = {
-						"headers": {
-							header1: array[0],
-							header2: array[1],
-							header3: array[2],
-							header4: array[3],
-							header5: array[4],
-							header6: "",
-							header7: "",
-							header8: "0"
-						}
-					};
-					aLines.push(oLineFirst.headers);
-
-					// Rows [#2-...]
-					var counter = 7;
-					do {
-						var oLines = {
-							"headers": {
-								header1: array[counter],
-								header2: array[counter + 1],
-								header3: array[counter + 2],
-								header4: array[counter + 3],
-								header5: array[counter + 4],
-								header6: array[counter + 5],
-								header7: array[counter + 6],
-								header8: array[counter + 7]
-							}
+					for (let line of array) {
+						// splitst element uit array op tab
+						line = line.split("\t");
+						// line is nu 1 regel uit het bestand, en met elk veld uit die regel vul je een object op
+						let temp = {
+							Matnr: line[0],
+							BatchRt: line[1],
+							PeriodIndicator: line[2],
+							ScheduleLineDate: line[3],
+							PlannedQuantity: line[4],
+							Bom: line[5],
+							ProductionV: line[6],
+							Offset: line[7]
 						};
-						console.log("[#] Current loop iteration: " + counter / 7);
-						counter = counter + 7;
-
-						// var newline0 = "\r\n";
-						// var newline1 = "\u2029";
-						// var newline2 = "\u000a";
-						// var newline3 = "\u2028";
-
-						// for (var d = 0; d < 8; d++) {
-						// 	if (oLines.headers[d].includes(newline0) || oLines.headers[d].includes(newline1) ||
-						// 		oLines.headers[d].includes(newline2) || oLines.headers[d].includes(newline3)) {
-						// 		oLines.headers[d] = "GOTCHA!";
-						// 	}
-						// }
-
-						console.log("Cleaned oLines -> " + oLines.headers + " - Now pushing to aLines!");
-						aLines.push(oLines.headers);
+						// push dit object met de waarden van 'line' in een andere array 'aLines'
+						aLines.push(temp);
 					}
-					while (array.length > counter);
+
+					// loop de objecten over array
+					for (let obj of aLines) {
+						console.log(obj);
+					}
+
 					that.getView().getModel("FileModel").setData(aLines);
 					that.onLoadFileModel(aLines);
 
@@ -114,7 +89,7 @@ sap.ui.define([
 				if (name === "SESSION_RECORD.txt") {
 					console.log("Session record data detected!");
 					titleArray = ["Material Number", "Batch Input Interface Record Type", "Delivery/order finish date", "Internal Class Number",
-						"Row Number of Variant Table - External", "Usage Probability in Character Format", "Fixing indicator",
+						"Row Number of letiant Table - External", "Usage Probability in Character Format", "Fixing indicator",
 						"Copying firmed objects allowed", "Indicator = 'X' quantity / indicator = ' ' usage probability"
 					];
 					that.getView().getModel("FileModel").setData(aLines);
@@ -129,7 +104,7 @@ sap.ui.define([
 		}
 
 		/*onUploadSelectedButton: function () {
-			var oUploadSet = this.byId("UploadSet");
+			let oUploadSet = this.byId("UploadSet");
 
 			oUploadSet.getItems().forEach(function (oItem) {
 				if (oItem.getListItem().getSelected()) {
@@ -139,7 +114,7 @@ sap.ui.define([
 		},
 
 		onDownloadSelectedButton: function () {
-			var oUploadSet = this.byId("UploadSet");
+			let oUploadSet = this.byId("UploadSet");
 
 			oUploadSet.getItems().forEach(function (oItem) {
 				if (oItem.getListItem().getSelected()) {
