@@ -8372,7 +8372,7 @@ html[dir=rtl] .sapMILIDiv {
 }
 
 .sapMLabelMaxWidth {
-    max-width: 100%
+    max-width: 100%;
 }
 
 .sapMLIBActionable .sapMLabel {
