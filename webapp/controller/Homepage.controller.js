@@ -234,17 +234,18 @@ sap.ui.define([
 		},
 		_handleError: function (oError) {
 			if (typeof oError === "object") {
-				// let oErrorMessage = JSON.parse(oError
+				console.log("An object has caused an error!");
+			} else {
+				console.log("An error has occured!");
 			}
 		},
 		handleUploadPress: function () {
 				let oPostModel = this.getModel("PostModel").getData();
-				let oSelectedMaterialsModel = this.getModel("SelectedMaterials").getData();
-				let oCustomerInfoModel = this.getModel("CustomerInfoModel").getData();
+				let oSelectedLinesModel = this.getModel("SelectedLines").getData();
+				let oRecordModel = this.getModel("RecordModel").getData();
 				let aConvertedItems = [];
 				if (name === "SESSION_RECORD.txt") {
-
-					oSelectedMaterialsModel.forEach((material, index) => {
+					oSelectedLinesModel.forEach((material, index) => {
 						let oEntry = {
 							Zzmaterial: material.key,
 							Zzquantity: material.quantity,
@@ -255,13 +256,20 @@ sap.ui.define([
 					});
 					// debugger;
 					oPostModel.Zzvbeln = "0";
-					oPostModel.Zztitle = oCustomerInfoModel.title;
-					oPostModel.Zzname1 = oCustomerInfoModel.Name1;
-					oPostModel.Zzstreet = oCustomerInfoModel.Street;
+					oPostModel.Zztitle = oRecordModel.title;
+					oPostModel.Matnr = oRecordModel.Matnr;
+					oPostModel.BatchRt = oRecordModel.BatchRt;
+					oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
+					oPostModel.InternClassNr = oRecordModel.InternClassNr;
+					oPostModel.RowNrLetiantTableEXT = oRecordModel.RowNrLetiantTableEXT;
+					oPostModel.UsageProbCharFormat = oRecordModel.UsageProbCharFormat;
+					oPostModel.FixingIndic = oRecordModel.FixingIndic;
+					oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
+					oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
 
 					oPostModel.toItems = aConvertedItems;
 					this.getView().setBusy(true);
-					this._postData("/SessionRecord", oPostModel).
+					this._postData("/Session_records", oPostModel).
 					then((oData) => {
 							if (oData.Zzvbeln !== "") {
 								var oDialog = new sap.m.Dialog({
@@ -270,7 +278,7 @@ sap.ui.define([
 									type: "Message",
 									state: "Success",
 									content: new sap.m.Text({
-										text: `Sales order ${oData.Zzvbeln} successfully created `
+										text: `Session record data ${oData.Zzvbeln} successfully created in back-end`
 									}),
 									endButton: new sap.m.Button({
 										text: "OK",
@@ -286,7 +294,7 @@ sap.ui.define([
 								oDialog.open();
 								this.getView().setBusy(false);
 							} else {
-								GenericElements.showDialog("Error", "No sales order was created, please verify materials.", "OK", "Error");
+								console.log("Er werd geen data naar de back-end doorgestuurd, probeer opnieuw!");
 								this.getView().setBusy(false);
 							}
 						})
