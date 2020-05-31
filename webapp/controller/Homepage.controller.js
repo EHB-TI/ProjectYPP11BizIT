@@ -40,6 +40,15 @@ sap.ui.define([
 			}
 			this.getView().getModel("FileModel").setData(aLinesH);
 			this.onLoadFileModel(aLinesH);
+
+			// Kolommen resizen
+			let header = $(".col");
+			for (let f = 0; f < headerTitles.length; f++) {
+				if (f.innerText === "") {
+					console.log("Empty headers found, now cleaning!\n" + f + "\n" + header);
+					// header[f].visible = false;
+				}
+			}
 		},
 		setup_table: function (file) {
 			console.log("setup_table has been loaded!");
@@ -255,8 +264,6 @@ sap.ui.define([
 						aConvertedItems.push(oEntry);
 					});
 					// debugger;
-					oPostModel.Zzvbeln = "0";
-					oPostModel.Zztitle = oRecordModel.title;
 					oPostModel.Matnr = oRecordModel.Matnr;
 					oPostModel.BatchRt = oRecordModel.BatchRt;
 					oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
@@ -271,14 +278,14 @@ sap.ui.define([
 					this.getView().setBusy(true);
 					this._postData("/Session_records", oPostModel).
 					then((oData) => {
-							if (oData.Zzvbeln !== "") {
+							if (oData.Matnr !== "") {
 								var oDialog = new sap.m.Dialog({
 									id: "genericDialog",
 									title: "Success",
 									type: "Message",
 									state: "Success",
 									content: new sap.m.Text({
-										text: `Session record data ${oData.Zzvbeln} successfully created in back-end`
+										text: `Session record data ${oData.Matnr} successfully created in back-end`
 									}),
 									endButton: new sap.m.Button({
 										text: "OK",
