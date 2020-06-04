@@ -1,0 +1,64 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+	<edmx:DataServices m:DataServiceVersion="2.0">
+		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="YPP11_2_SRV" xml:lang="en" sap:schema-version="1">
+			<EntityType Name="B60ET" sap:content-version="1">
+				<Key><PropertyRef Name="Stype"/></Key><Property Name="Stype" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Record Type" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Entlu" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="PerIn" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Edatu" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Delivery Date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Plnmg" Type="Edm.String" Nullable="false" MaxLength="17" sap:label="Planned qty" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Sernr" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="BOM expl.number" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Verid" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Prod. Version" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="BGR00" sap:content-version="1">
+				<Key><PropertyRef Name="Stype"/></Key><Property Name="Stype" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Record Type" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Group" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="Group name" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Mandt" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Client" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Usnam" Type="Edm.String" Nullable="false" MaxLength="12" sap:label="User ID" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Start" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Lock until:" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Xkeep" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Keep Indicator" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Nodata" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="No batch input" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="B60BL" sap:content-version="1">
+				<Key><PropertyRef Name="Stype"/></Key><Property Name="Stype" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Record Type" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="18" sap:label="Material" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Bedae" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Reqmts type" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Versb" Type="Edm.String" Nullable="false" MaxLength="2" sap:label="Version" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Vervs" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Active" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Pbdnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Reqmts Plan" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:label="Plant" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Mcinc" Type="Edm.String" Nullable="false" MaxLength="8" sap:label="Info structure" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Stfna" Type="Edm.String" Nullable="false" MaxLength="30" sap:label="Field name" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Vrsic" Type="Edm.String" Nullable="false" MaxLength="3" sap:label="Version" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Knttp" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Acct Assgt Cat." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Sobkz" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Special Stock" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Kzvbr" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Consumption" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Pspel" Type="Edm.String" Nullable="false" MaxLength="24" sap:label="WBS Element" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Kdpos" Type="Edm.String" Nullable="false" MaxLength="6" sap:label="Sales Ord. Item" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Kdauf" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Sales Order" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Aprog" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="R" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Datlp" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Date" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Uhrlp" Type="Edm.Time" Nullable="false" Precision="0" sap:label="Time" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Kzbws" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Valuation" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Berid" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="MRP Area" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Oplkz" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Without MRP" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="SgtRcat" Type="Edm.String" Nullable="false" MaxLength="16" sap:label="Reqmnt Segment" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="PbdnrExt" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Ext. Req. Plan" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="B60C1" sap:content-version="1">
+				<Key><PropertyRef Name="Stype"/></Key><Property Name="Stype" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Record Type" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Pdatu" Type="Edm.DateTime" Nullable="false" Precision="7" sap:label="Finish date" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Clint" Type="Edm.String" Nullable="false" MaxLength="10" sap:label="Int class no." sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Lnpos" Type="Edm.String" Nullable="false" MaxLength="5" sap:label="Row Number" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Ewahr" Type="Edm.String" Nullable="false" MaxLength="30" sap:label="Usage Probability" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Flgfx" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Fixing" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Flgub" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Copy firmed objcts" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Flgwa" Type="Edm.String" Nullable="false" MaxLength="1" sap:label="Usge prob. flag" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityContainer Name="YPP11_2_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="Scheduleline_datas" EntityType="YPP11_2_SRV.B60ET" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:addressable="false" sap:content-version="1"/><EntitySet Name="Session_records" EntityType="YPP11_2_SRV.BGR00" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:addressable="false" sap:content-version="1"/><EntitySet Name="Item_datas" EntityType="YPP11_2_SRV.B60BL" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:addressable="false" sap:content-version="1"/><EntitySet Name="Characteristic_datas" EntityType="YPP11_2_SRV.B60C1" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:addressable="false" sap:content-version="1"/></EntityContainer><atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/YPP11_2_SRV/$metadata"/><atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/YPP11_2_SRV/$metadata"/></Schema>
+	</edmx:DataServices>
+</edmx:Edmx>
