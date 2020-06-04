@@ -45,11 +45,11 @@ sap.ui.define([
 
 			// Kolommen resizen
 			for (let f = 0; f < headerTitles.length; f++) {
-				debugger;
+				
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
 					console.log("Empty header found, now cleaning: #" + f);
-					cols[f].setVisible(false);
-					debugger;
+					//cols[f].setVisible(false);
+					//debugger;
 				}
 			}
 		},
@@ -269,7 +269,7 @@ sap.ui.define([
 				oPostModel.FixingIndic = oRecordModel.FixingIndic;
 				oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
 				oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
-
+					 debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
 				this._postData("/Session_records", oPostModel).
