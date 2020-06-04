@@ -26,6 +26,8 @@ sap.ui.define([
 		emptyAndFillTable: function (titleArray, aLinesH) {
 			let aLinesEmpty = [];
 			let headerTitles = $(".label");
+			// let cols = $("tbody>tr>td.sapUiTableHeaderCell");
+			let cols = $(".col");
 
 			// Leegmaken van table
 			for (let i1 = 0; i1 < titleArray.length; i1++) {
@@ -40,6 +42,16 @@ sap.ui.define([
 			}
 			this.getView().getModel("FileModel").setData(aLinesH);
 			this.onLoadFileModel(aLinesH);
+
+			// Kolommen resizen
+			for (let f = 0; f < headerTitles.length; f++) {
+				debugger;
+				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
+					console.log("Empty header found, now cleaning: #" + f);
+					cols[f].setVisible(false);
+					debugger;
+				}
+			}
 		},
 		setup_table: function (file) {
 			console.log("setup_table has been loaded!");
@@ -240,87 +252,64 @@ sap.ui.define([
 			}
 		},
 		handleUploadPress: function () {
-				let oPostModel = this.getModel("PostModel").getData();
-				let oSelectedLinesModel = this.getModel("SelectedLines").getData();
-				let oRecordModel = this.getModel("RecordModel").getData();
-				let aConvertedItems = [];
-				if (name === "SESSION_RECORD.txt") {
-					oSelectedLinesModel.forEach((material, index) => {
-						let oEntry = {
-							Zzmaterial: material.key,
-							Zzquantity: material.quantity,
-							Zzdeldate: this.convertDate(material.date),
-							Zzvbeln: "0"
-						};
-						aConvertedItems.push(oEntry);
-					});
-					// debugger;
-					oPostModel.Zzvbeln = "0";
-					oPostModel.Zztitle = oRecordModel.title;
-					oPostModel.Matnr = oRecordModel.Matnr;
-					oPostModel.BatchRt = oRecordModel.BatchRt;
-					oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
-					oPostModel.InternClassNr = oRecordModel.InternClassNr;
-					oPostModel.RowNrLetiantTableEXT = oRecordModel.RowNrLetiantTableEXT;
-					oPostModel.UsageProbCharFormat = oRecordModel.UsageProbCharFormat;
-					oPostModel.FixingIndic = oRecordModel.FixingIndic;
-					oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
-					oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
+			let oPostModel = this.getModel("PostModel").getData();
+			// let oSelectedLinesModel = this.getModel("SelectedLines").getData();
+			let oRecordModel = this.getModel("RecordModel").getData();
+			let aConvertedItems = [];
+			if (name === "SESSION_RECORD.txt") {
+				aConvertedItems.push(oRecordModel);
 
-					oPostModel.toItems = aConvertedItems;
-					this.getView().setBusy(true);
-					this._postData("/Session_records", oPostModel).
-					then((oData) => {
-							if (oData.Zzvbeln !== "") {
-								var oDialog = new sap.m.Dialog({
-									id: "genericDialog",
-									title: "Success",
-									type: "Message",
-									state: "Success",
-									content: new sap.m.Text({
-										text: `Session record data ${oData.Zzvbeln} successfully created in back-end`
-									}),
-									endButton: new sap.m.Button({
-										text: "OK",
-										press: () => {
-											oDialog.close();
-											this.clearModel();
-										}
-									}),
-									afterClose: function () {
-										oDialog.destroy();
+				// debugger;
+				oPostModel.Matnr = oRecordModel.Matnr;
+				oPostModel.BatchRt = oRecordModel.BatchRt;
+				oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
+				oPostModel.InternClassNr = oRecordModel.InternClassNr;
+				oPostModel.RowNrLetiantTableEXT = oRecordModel.RowNrLetiantTableEXT;
+				oPostModel.UsageProbCharFormat = oRecordModel.UsageProbCharFormat;
+				oPostModel.FixingIndic = oRecordModel.FixingIndic;
+				oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
+				oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
+
+				oPostModel.toItems = aConvertedItems;
+				this.getView().setBusy(true);
+				this._postData("/Session_records", oPostModel).
+				then((oData) => {
+						if (oData.Matnr !== "") {
+							var oDialog = new sap.m.Dialog({
+								id: "genericDialog",
+								title: "Success",
+								type: "Message",
+								state: "Success",
+								content: new sap.m.Text({
+									text: `Session record data with material number #${oData.Matnr} successfully created in back-end`
+								}),
+								endButton: new sap.m.Button({
+									text: "OK",
+									press: () => {
+										oDialog.close();
+										this.clearModel();
 									}
-								});
-								oDialog.open();
-								this.getView().setBusy(false);
-							} else {
-								console.log("Er werd geen data naar de back-end doorgestuurd, probeer opnieuw!");
-								this.getView().setBusy(false);
-							}
-						})
-						.catch((oError) => {
-							this._handleError(oError);
+								}),
+								afterClose: function () {
+									oDialog.destroy();
+								}
+							});
+							oDialog.open();
 							this.getView().setBusy(false);
-						});
-				} else if (name === "SCHEDULE_LINE_DATA.txt") {
-					// hier dupe van vorige 
-				} else if (name === "ITEM_DATA.txt") {
-					// hier dupe van vorige 
-				}
+						} else {
+							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							this.getView().setBusy(false);
+						}
+					})
+					.catch((oError) => {
+						this._handleError(oError);
+						this.getView().setBusy(false);
+					});
+			} else if (name === "SCHEDULE_LINE_DATA.txt") {
+				// hier dupe van vorige 
+			} else if (name === "ITEM_DATA.txt") {
+				// hier dupe van vorige 
 			}
-			// onUpload: function (oEvent) {
-			// 	var oFileUpload = this.getView().byId("fileUploader");
-			// 	var domRef = oFileUpload.getFocusDomRef();
-			// 	var file = domRef.files[0];
-			// 	var that = this;
-			// 	this.fileName = file.name;
-			// 	this.fileType = file.type;
-			// 	var reader = new FileReader();
-			// 	reader.onload = function (e) {
-			// 		var vContent = e.currentTarget.result.replace("data:" + file.type + ";base64,", "");
-			// 		that.postFileToBackend(workorderId, that.fileName, that.fileType, vContent);
-			// 	};
-			// 	reader.readAsDataURL(file);
-			// }
+		}
 	});
 });
