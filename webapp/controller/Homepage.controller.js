@@ -16,7 +16,6 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel(sName);
 		},
 		onpresschange: function (oEvent) {
-			// let sFilename = oEvent.getParameter("newValue");
 			let oFile = oEvent.getParameter("files")[0];
 			this.setup_table(oFile);
 		},
@@ -45,7 +44,6 @@ sap.ui.define([
 
 			// Kolommen resizen
 			for (let f = 0; f < headerTitles.length; f++) {
-				
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
 					console.log("Empty header found, now cleaning: #" + f);
 					//cols[f].setVisible(false);
@@ -222,8 +220,6 @@ sap.ui.define([
 			reader.readAsText(file);
 		},
 		/*
-		 * Generic method that posts data to the service
-		 * @public
 		 * @param {that} the view
 		 * @param {serviceExtend} the path to the specific entitie set
 		 * @param {oPayload} the payload that needs to be POSTed
@@ -252,14 +248,15 @@ sap.ui.define([
 			}
 		},
 		handleUploadPress: function () {
-			let oPostModel = this.getModel("PostModel").getData();
 			// let oSelectedLinesModel = this.getModel("SelectedLines").getData();
+			let oPostModel = this.getModel("PostModel").getData();
 			let oRecordModel = this.getModel("RecordModel").getData();
 			let aConvertedItems = [];
+
+			console.log("[" + name + "] Session record pushing to backend...")
 			if (name === "SESSION_RECORD.txt") {
 				aConvertedItems.push(oRecordModel);
 
-				// debugger;
 				oPostModel.Matnr = oRecordModel.Matnr;
 				oPostModel.BatchRt = oRecordModel.BatchRt;
 				oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
@@ -269,7 +266,7 @@ sap.ui.define([
 				oPostModel.FixingIndic = oRecordModel.FixingIndic;
 				oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
 				oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
-					 debugger;
+				debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
 				this._postData("/Session_records", oPostModel).

@@ -4,9 +4,9 @@
 		<pages>
 			<Page title="Title" showHeader="false" class="css">
 				<content>
-					<u:FileUploader id="fileUploader" class="form" name="myFileUpload" change="onpresschange" tooltip="Upload your file"
-						icon="sap-icon://search" uploadUrl="/sap/opu/odata/sap/YPP11_2_SRV"/>
-					<Button text="Upload File" press="handleUploadPress" class="myCustomButton form" icon="sap-icon://arrow-bottom"/>
+					<u:FileUploader id="fileUploader" class="form" name="myFileUpload" change="onpresschange" tooltip="Upload File to Table"
+						icon="sap-icon://search"/>
+					<Button text="Upload Table data to Backend" press="handleUploadPress" class="myCustomButton form" icon="sap-icon://arrow-bottom"/>
 					<t:Table rows="{FileModel>/lines}" id="table" selectionMode="MultiToggle" visibleRowCount="7" paste="onPaste" ariaLabelledBy="title">
 						<t:columns>
 							<t:Column class="col" width="35%" visible="true">
