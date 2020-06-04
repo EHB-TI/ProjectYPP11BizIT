@@ -7,6 +7,7 @@ xmlns:t="sap.ui.table"
 xmlns:u="sap.ui.unified" 
 xmlns:l="sap.ui.layout" 
 xmlns:html="http://www.w3.org/1999/xhtml"
+
 	controllerName="ProjectYPP11BizIT.ProjectYPP11BizIT.controller.App" displayBlock="true" id="collection0">
 	<Shell id="shell">
 		<App id="app">
