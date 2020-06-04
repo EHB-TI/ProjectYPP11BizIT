@@ -7,129 +7,129 @@
 					<u:FileUploader id="fileUploader" class="form" name="myFileUpload" change="onpresschange" tooltip="Upload File to Table"
 						icon="sap-icon://search"/>
 					<Button text="Upload Table data to Backend" press="handleUploadPress" class="myCustomButton form" icon="sap-icon://arrow-bottom"/>
-					<t:Table rows="{FileModel>/lines}" id="table" selectionMode="MultiToggle" visibleRowCount="7" paste="onPaste" ariaLabelledBy="title">
+					<t:Table rows="{FileModel>/lines}" id="table" selectionMode="MultiToggle" visibleRowCount="6" ariaLabelledBy="title">
 						<t:columns>
-							<t:Column class="col" width="35%" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row1}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header1}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" width="10%" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row2}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header2}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" width="10%" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row3}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header3}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" width="25%" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row4}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header4}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" width="10%" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row5}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header5}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" width="10%" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row6}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header6}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row7}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header7}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row8}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header8}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row9}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header9}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row10}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header10}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row11}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header11}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row12}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header12}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row13}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header13}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row14}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header14}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row15}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header15}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row16}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header16}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row17}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header17}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row18}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header18}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row19}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header19}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row20}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header20}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
 								</t:template>
 							</t:Column>
-							<t:Column class="col" visible="true">
+							<t:Column class="col" width="auto" visible="{visModel>/row21}">
 								<Label class="label"/>
 								<t:template>
 									<Text text="{FileModel>header21}" class="sapUiSmallMargin sapThemeHighlight-asColor myCustomText"/>
