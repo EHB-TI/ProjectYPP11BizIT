@@ -1,18 +1,17 @@
 sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
-	
     "use strict";
     return Controller.extend("ProjectYPP11BizIT.ProjectYPP11BizIT.controller.App", {
         onInit: function () {
             console.log("app controller:console werkt.");
            
-        /*  //source: https://jsbin.com/dopaziyixe/edit?html,output
-            var f = new sap.ui.unified.FileUploader({  
-          change : function(e){
+         //source: https://jsbin.com/dopaziyixe/edit?html,output
+          //  var f = new sap.ui.unified.FileUploader({  
+         /* change : function(e){
             sap.ui.getCore()._file = e.getParameter("files") && e.getParameter("files")[0];
-            }
+            }*/
            
-            f.placeAt("content");
-        });*/
+           // f.placeAt("content");
+        
        
         },
        
