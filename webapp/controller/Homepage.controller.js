@@ -4,7 +4,6 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("ProjectYPP11BizIT.ProjectYPP11BizIT.controller.Homepage", {
-
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -16,34 +15,57 @@ sap.ui.define([
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
-
 		onpresschange: function (oEvent) {
-			var sFilename = oEvent.getParameter("newValue");
-			var oFile = oEvent.getParameter("files")[0];
+			let oFile = oEvent.getParameter("files")[0];
 			this.setup_table(oFile);
 		},
+		onLoadFileModel: function (aLines) {
+			this.getView().getModel("FileModel").setProperty("/lines", aLines);
+		},
+		emptyAndFillTable: function (titleArray, aLinesH) {
+			let aLinesEmpty = [];
+			let headerTitles = $(".label");
+			// let cols = $("tbody>tr>td.sapUiTableHeaderCell");
+			let cols = $(".col");
 
+			// Leegmaken van table
+			for (let i1 = 0; i1 < titleArray.length; i1++) {
+				headerTitles[i1].innerHTML = "";
+			}
+			this.getView().getModel("FileModel").setData(aLinesEmpty);
+			this.onLoadFileModel(aLinesEmpty);
+
+			// Opvullen van table
+			for (let i2 = 0; i2 < titleArray.length; i2++) {
+				headerTitles[i2].innerHTML = titleArray[i2];
+			}
+			this.getView().getModel("FileModel").setData(aLinesH);
+			this.onLoadFileModel(aLinesH);
+
+			// Kolommen resizen
+			for (let f = 0; f < headerTitles.length; f++) {
+				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
+					console.log("Empty header found, now cleaning: #" + f);
+					//cols[f].setVisible(false);
+					//debugger;
+				}
+			}
+		},
 		setup_table: function (file) {
 			console.log("setup_table has been loaded!");
-			var name = file.name;
+			let name = file.name;
 			console.log(name);
-			var reader = new FileReader();
-			var that = this;
-
+			let reader = new FileReader();
+			let that = this;
 			reader.onload = function (e) {
-				var bin = e.target.result; // haal resultaat op van file upload
-				var array = bin.split("\t"); // split files in een array van objecten
-				// 		for (var z = 0; z < array.length; z++) {
-				// 		array[z].split(/\n/g).join("");
-				// 	}
-
+				let bin = e.target.result; // haal resultaat op van file upload
+				console.log("Bin: " + bin);
+				let array = bin.split("\n"); // split files in een array van objecten
 				console.log("Array: " + array);
 
-				var aLines = [];
-				var titleArray = [];
-				var headerTitles = document.getElementsByClassName("label");
-				var headerBox = document.querySelectorAll("td>div>div");
-				console.log(headerBox);
+				let aLines = [];
+				let aLinesH = [];
+				let titleArray = [];
 
 				if (name === "SCHEDULE_LINE_DATA.txt") {
 					console.log("Schedule line data detected!");
@@ -51,50 +73,39 @@ sap.ui.define([
 						"Schedule line date", "Planned quantity batch input", "BOM explosion number", "Production Version",
 						"Offset for generation of test data"
 					];
-					for (var i1 = 0; i1 < titleArray.length; i1++) {
-						headerTitles[i1].innerHTML = titleArray[i1];
-						// headerBox[i1].setAttribute("style", "width: 100%!important");
-					}
-					var oLineScheduleLine1 = {
-						header1: array[0],
-						header2: array[1],
-						header3: array[2],
-						header4: array[3],
-						header5: array[4],
-						header6: "",
-						header7: "",
-						header8: "0"
-					};
-					for (var headera in oLineScheduleLine1) {
-						console.log("Before: " + oLineScheduleLine1[headera]);
-						oLineScheduleLine1[headera].split("/\n/g").join("");
-						console.log("After: " + oLineScheduleLine1[headera]);
-					}
-					console.log(oLineScheduleLine1);
-					aLines.push(oLineScheduleLine1);
 
-					for (var vakje = 7; vakje < array.length; vakje++) {
-						var oLineScheduleLine2 = {
-							header1: array[vakje],
-							header2: array[vakje + 1],
-							header3: array[vakje + 2],
-							header4: array[vakje + 3],
-							header5: array[vakje + 4],
-							header6: "",
-							header7: "",
-							header8: array[vakje + 7]
+					for (let line of array) {
+						// splitst element uit array op tab
+						line = line.split("\t");
+						// line is nu 1 regel uit het bestand, en met elk veld uit die regel vul je een object op
+						let temp = {
+							Matnr: line[0],
+							BatchRt: line[1],
+							PeriodIndicator: line[2],
+							ScheduleLineDate: line[3],
+							PlannedQuantity: line[4],
+							Bom: line[5],
+							ProductionV: line[6],
+							Offset: line[7]
 						};
-						for (var headerb in oLineScheduleLine1) {
-							console.log("Before: " + oLineScheduleLine1[headerb]);
-							oLineScheduleLine1[headerb].split("/\n/g").join("");
-							console.log("After: " + oLineScheduleLine1[headerb]);
-						}
-						console.log(oLineScheduleLine2);
-						aLines.push(oLineScheduleLine2);
+						// push dit object lines naar een array 'aLines'
+						aLines.push(temp);
 					}
-
-					that.getView().getModel("FileModel").setData(aLines);
-					that.onLoadFileModel(aLines);
+					// loop de objecten over array
+					for (let obj of aLines) {
+						let t = {
+							header1: obj.Matnr,
+							header2: obj.BatchRt,
+							header3: obj.PeriodIndicator,
+							header4: obj.ScheduleLineDate,
+							header5: obj.PlannedQuantity,
+							header6: obj.Bom,
+							header7: obj.ProductionV,
+							header8: obj.Offset
+						};
+						aLinesH.push(t);
+					}
+					that.emptyAndFillTable(titleArray, aLinesH);
 				} else if (name === "ITEM_DATA.txt") {
 					console.log("Item data detected!");
 					titleArray = ["Batch Input Interface Record Type", "Material Number", "Requirements type",
@@ -104,44 +115,198 @@ sap.ui.define([
 						"Consumption Posting", "Work Breakdown Structure Element (WBS Element)", "Item Number in Sales Order", "Sales Order Number",
 						"Reference type	Date", "Time", "Valuation of Special Stock", "MRP Area", "With no MRP"
 					];
-					that.getView().getModel("FileModel").setData(aLines);
-					that.onLoadFileModel(aLines);
-				} else
-				if (name === "SESSION_RECORD.txt") {
+
+					for (let line of array) {
+						// splitst element uit array op tab
+						line = line.split("\t");
+						// line is nu 1 regel uit het bestand, en met elk veld uit die regel vul je een object op
+						let temp = {
+							BatchInputIRT: line[0],
+							MatNr: line[1],
+							ReqType: line[2],
+							VersionNr: line[3],
+							Indicator: line[4],
+							ReqPlanNr: line[5],
+							Plant: line[6],
+							NameInfoStructChar: line[7],
+							FieldNameGenDDICStruct: line[8],
+							VersionNrInfoStruct: line[9],
+							AccAssignmentCat: line[10],
+							SpecialStockIndic: line[11],
+							ConsumpPost: line[12],
+							WorkBrkdwnStructElement: line[13],
+							ItemNrSO: line[14],
+							NrSO: line[15],
+							RefTypeDate: line[16],
+							Time: line[17],
+							ValueSpecStock: line[18],
+							AreaMRP: line[19],
+							WithNoMRP: line[20]
+						};
+						// push dit object lines naar een array 'aLines'
+						aLines.push(temp);
+					}
+					// loop de objecten over array
+					for (let obj of aLines) {
+						let t = {
+							header1: obj.BatchInputIRT,
+							header2: obj.MatNr,
+							header3: obj.ReqType,
+							header4: obj.VersionNr,
+							header5: obj.Indicator,
+							header6: obj.ReqPlanNr,
+							header7: obj.Plant,
+							header8: obj.NameInfoStructChar,
+							header9: obj.FieldNameGenDDICStruct,
+							header10: obj.VersionNrInfoStruct,
+							header11: obj.AccAssignmentCat,
+							header12: obj.SpecialStockIndic,
+							header13: obj.ConsumpPost,
+							header14: obj.WorkBrkdwnStructElement,
+							header15: obj.ItemNrSO,
+							header16: obj.NrSO,
+							header17: obj.RefTypeDate,
+							header18: obj.Time,
+							header19: obj.ValueSpecStock,
+							header20: obj.AreaMRP,
+							header21: obj.WithNoMRP
+						};
+						aLinesH.push(t);
+					}
+					that.emptyAndFillTable(titleArray, aLinesH);
+				} else if (name === "SESSION_RECORD.txt") {
 					console.log("Session record data detected!");
 					titleArray = ["Material Number", "Batch Input Interface Record Type", "Delivery/order finish date", "Internal Class Number",
-						"Row Number of Variant Table - External", "Usage Probability in Character Format", "Fixing indicator",
+						"Row Number of letiant Table - External", "Usage Probability in Character Format", "Fixing indicator",
 						"Copying firmed objects allowed", "Indicator = 'X' quantity / indicator = ' ' usage probability"
 					];
-					that.getView().getModel("FileModel").setData(aLines);
-					that.onLoadFileModel(aLines);
+
+					for (let line of array) {
+						// splitst element uit array op tab
+						line = line.split("\t");
+						// line is nu 1 regel uit het bestand, en met elk veld uit die regel vul je een object op
+						let temp = {
+							Matnr: line[0],
+							BatchRt: line[1],
+							DeliveryOrOrderFinishDate: line[2],
+							InternClassNr: line[3],
+							RowNrLetiantTableEXT: line[4],
+							UsageProbCharFormat: line[5],
+							FixingIndic: line[6],
+							CopyingFirmedObjAllowed: line[7],
+							QuantityIndicUsageProb: line[8]
+						};
+						// push dit object lines naar een array 'aLines'
+						aLines.push(temp);
+					}
+					// loop de objecten over array
+					for (let obj of aLines) {
+						let t = {
+							header1: obj.Matnr,
+							header2: obj.BatchRt,
+							header3: obj.DeliveryOrOrderFinishDate,
+							header4: obj.InternClassNr,
+							header5: obj.RowNrLetiantTableEXT,
+							header6: obj.UsageProbCharFormat,
+							header7: obj.FixingIndic,
+							header8: obj.CopyingFirmedObjAllowed,
+							header9: obj.QuantityIndicUsageProb
+						};
+						aLinesH.push(t);
+					}
+					that.emptyAndFillTable(titleArray, aLinesH);
 				}
 			};
 			reader.readAsText(file);
 		},
-		// Verwijzen naar onLoadFileModel onder property lines
-		onLoadFileModel: function (aLines) {
-			this.getView().getModel("FileModel").setProperty("/lines", aLines);
-		}
-
-		/*onUploadSelectedButton: function () {
-			var oUploadSet = this.byId("UploadSet");
-
-			oUploadSet.getItems().forEach(function (oItem) {
-				if (oItem.getListItem().getSelected()) {
-					oUploadSet.uploadItem(oItem);
-				}
+		/*
+		 * @param {that} the view
+		 * @param {serviceExtend} the path to the specific entitie set
+		 * @param {oPayload} the payload that needs to be POSTed
+		 * @return {promise} returns the promise with either the data or an errormessage
+		 */
+		_postData: function (sUrl, oPayload) {
+			let oModel = this.getModel();
+			return new Promise((resolve, reject) => {
+				oModel.create(sUrl, oPayload, {
+					success: function (oData) {
+						resolve(oData);
+						// debugger;
+					},
+					error: function (oError) {
+						reject(oError);
+						// debugger;
+					}
+				});
 			});
 		},
+		_handleError: function (oError) {
+			if (typeof oError === "object") {
+				console.log("An object has caused an error!");
+			} else {
+				console.log("An error has occured!");
+			}
+		},
+		handleUploadPress: function () {
+			// let oSelectedLinesModel = this.getModel("SelectedLines").getData();
+			let oPostModel = this.getModel("PostModel").getData();
+			let oRecordModel = this.getModel("RecordModel").getData();
+			let aConvertedItems = [];
 
-		onDownloadSelectedButton: function () {
-			var oUploadSet = this.byId("UploadSet");
+			console.log("[" + name + "] Session record pushing to backend...")
+			if (name === "SESSION_RECORD.txt") {
+				aConvertedItems.push(oRecordModel);
 
-			oUploadSet.getItems().forEach(function (oItem) {
-				if (oItem.getListItem().getSelected()) {
-					oItem.download(true);
-				}
-			});
-		}*/
+				oPostModel.Matnr = oRecordModel.Matnr;
+				oPostModel.BatchRt = oRecordModel.BatchRt;
+				oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
+				oPostModel.InternClassNr = oRecordModel.InternClassNr;
+				oPostModel.RowNrLetiantTableEXT = oRecordModel.RowNrLetiantTableEXT;
+				oPostModel.UsageProbCharFormat = oRecordModel.UsageProbCharFormat;
+				oPostModel.FixingIndic = oRecordModel.FixingIndic;
+				oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
+				oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
+				debugger;
+				oPostModel.toItems = aConvertedItems;
+				this.getView().setBusy(true);
+				this._postData("/Session_records", oPostModel).
+				then((oData) => {
+						if (oData.Matnr !== "") {
+							var oDialog = new sap.m.Dialog({
+								id: "genericDialog",
+								title: "Success",
+								type: "Message",
+								state: "Success",
+								content: new sap.m.Text({
+									text: `Session record data with material number #${oData.Matnr} successfully created in back-end`
+								}),
+								endButton: new sap.m.Button({
+									text: "OK",
+									press: () => {
+										oDialog.close();
+										this.clearModel();
+									}
+								}),
+								afterClose: function () {
+									oDialog.destroy();
+								}
+							});
+							oDialog.open();
+							this.getView().setBusy(false);
+						} else {
+							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							this.getView().setBusy(false);
+						}
+					})
+					.catch((oError) => {
+						this._handleError(oError);
+						this.getView().setBusy(false);
+					});
+			} else if (name === "SCHEDULE_LINE_DATA.txt") {
+				// hier dupe van vorige 
+			} else if (name === "ITEM_DATA.txt") {
+				// hier dupe van vorige 
+			}
+		}
 	});
 });
