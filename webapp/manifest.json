@@ -37,7 +37,10 @@
 			"desktop": true,
 			"tablet": true,
 			"phone": true
-		}
+		},
+	"supportedThemes": [
+	  "sap_bluecrystal"
+	]
 	},
 	"sap.ui5": {
 		"flexEnabled": false,
