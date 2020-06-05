@@ -56,15 +56,14 @@ sap.ui.define([
 			let visModel = this.getView().getModel("visModel");
 			let headerTitles = $(".label");
 
-			// fill in table headers
-			for (let i2 = 0; i2 < titleArray.length; i2++) {
-				headerTitles[i2].innerHTML = titleArray[i2];
-			}
 			// fill in table with data
 			this.getView().getModel("FileModel").setData(window.aLinesH);
 			this.onLoadFileModel(window.aLinesH);
 			console.log("[*] Table has been filled successfully!");
-
+			// fill in table headers
+			for (let i2 = 0; i2 < titleArray.length; i2++) {
+				headerTitles[i2].innerHTML = titleArray[i2];
+			}
 			// search for empty header span, then hide corresponding parent columns 
 			for (let f = 0; f < headerTitles.length; f++) {
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
