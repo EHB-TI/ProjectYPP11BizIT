@@ -114,7 +114,7 @@ sap.ui.define([
 						"Name of info structure - characteristic ", "Field name in the generated DDIC structure",
 						"Version number in the information structure", "Account Assignment Category", "Special Stock Indicator",
 						"Consumption Posting", "Work Breakdown Structure Element (WBS Element)", "Item Number in Sales Order", "Sales Order Number",
-						"Reference type	Date", "Time", "Valuation of Special Stock", "MRP Area", "With no MRP"
+						"Reference type",	"Date", "Time", "Valuation of Special Stock", "MRP Area", "With no MRP"
 					];
 
 					for (let line of array) {
@@ -138,11 +138,12 @@ sap.ui.define([
 							WorkBrkdwnStructElement: line[13],
 							ItemNrSO: line[14],
 							NrSO: line[15],
-							RefTypeDate: line[16],
-							Time: line[17],
-							ValueSpecStock: line[18],
-							AreaMRP: line[19],
-							WithNoMRP: line[20]
+							RefType: line[16],
+							Date: line [17],
+							Time: line[18],
+							ValueSpecStock: line[19],
+							AreaMRP: line[20],
+							WithNoMRP: line[21]
 						};
 						// push dit object lines naar een array 'aLines'
 						aLines.push(temp);
@@ -166,19 +167,21 @@ sap.ui.define([
 							header14: obj.WorkBrkdwnStructElement,
 							header15: obj.ItemNrSO,
 							header16: obj.NrSO,
-							header17: obj.RefTypeDate,
-							header18: obj.Time,
-							header19: obj.ValueSpecStock,
-							header20: obj.AreaMRP,
-							header21: obj.WithNoMRP
+							header17: obj.RefType,
+							header18: obj.Date,
+							header19: obj.Time,
+							header20: obj.ValueSpecStock,
+							header21: obj.AreaMRP,
+							header22: obj.WithNoMRP
+						
 						};
 						aLinesH.push(t);
 					}
 					that.emptyAndFillTable(titleArray, aLinesH);
-				} else if (name === "SESSION_RECORD.txt") {
-					console.log("Session record data detected!");
+				} else if (name === "CHARACTERISTIC_DATA.txt") {
+					console.log("Characteristic data detected!");
 					titleArray = ["Material Number", "Batch Input Interface Record Type", "Delivery/order finish date", "Internal Class Number",
-						"Row Number of letiant Table - External", "Usage Probability in Character Format", "Fixing indicator",
+						"Row Number of Variant Table - External", "Usage Probability in Character Format", "Fixing indicator",
 						"Copying firmed objects allowed", "Indicator = 'X' quantity / indicator = ' ' usage probability"
 					];
 
@@ -191,7 +194,7 @@ sap.ui.define([
 							BatchRt: line[1],
 							DeliveryOrOrderFinishDate: line[2],
 							InternClassNr: line[3],
-							RowNrLetiantTableEXT: line[4],
+							RowNrVariantTableEXT: line[4],
 							UsageProbCharFormat: line[5],
 							FixingIndic: line[6],
 							CopyingFirmedObjAllowed: line[7],
@@ -207,7 +210,7 @@ sap.ui.define([
 							header2: obj.BatchRt,
 							header3: obj.DeliveryOrOrderFinishDate,
 							header4: obj.InternClassNr,
-							header5: obj.RowNrLetiantTableEXT,
+							header5: obj.RowNrVariantTableEXT,
 							header6: obj.UsageProbCharFormat,
 							header7: obj.FixingIndic,
 							header8: obj.CopyingFirmedObjAllowed,
@@ -254,15 +257,15 @@ sap.ui.define([
 			let oRecordModel = this.getModel("RecordModel").getData();
 			let aConvertedItems = [];
 
-			console.log("[" + window.name + "] Session record pushing to backend...");
-			if (window.name === "SESSION_RECORD.txt") {
+			console.log("[" + window.name + "] CHARACTERISTIC_DATA pushing to backend...");
+			if (window.name === "CHARACTERISTIC_DATA.txt") {
 				aConvertedItems.push(oRecordModel);
 
 				oPostModel.Matnr = oRecordModel.Matnr;
 				oPostModel.BatchRt = oRecordModel.BatchRt;
 				oPostModel.DeliveryOrOrderFinishDate = oRecordModel.DeliveryOrOrderFinishDate;
 				oPostModel.InternClassNr = oRecordModel.InternClassNr;
-				oPostModel.RowNrLetiantTableEXT = oRecordModel.RowNrLetiantTableEXT;
+				oPostModel.RowNrVariantTableEXT = oRecordModel.RowNrVariantTableEXT;
 				oPostModel.UsageProbCharFormat = oRecordModel.UsageProbCharFormat;
 				oPostModel.FixingIndic = oRecordModel.FixingIndic;
 				oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
