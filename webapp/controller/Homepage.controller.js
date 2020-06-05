@@ -114,7 +114,7 @@ sap.ui.define([
 						"Name of info structure - characteristic ", "Field name in the generated DDIC structure",
 						"Version number in the information structure", "Account Assignment Category", "Special Stock Indicator",
 						"Consumption Posting", "Work Breakdown Structure Element (WBS Element)", "Item Number in Sales Order", "Sales Order Number",
-						"Reference type",	"Date", "Time", "Valuation of Special Stock", "MRP Area", "With no MRP"
+						"Reference type", "Date", "Time", "Valuation of Special Stock", "MRP Area", "With no MRP"
 					];
 
 					for (let line of array) {
@@ -139,7 +139,7 @@ sap.ui.define([
 							ItemNrSO: line[14],
 							NrSO: line[15],
 							RefType: line[16],
-							Date: line [17],
+							date: line[17],
 							Time: line[18],
 							ValueSpecStock: line[19],
 							AreaMRP: line[20],
@@ -168,12 +168,12 @@ sap.ui.define([
 							header15: obj.ItemNrSO,
 							header16: obj.NrSO,
 							header17: obj.RefType,
-							header18: obj.Date,
+							header18: obj.date,
 							header19: obj.Time,
 							header20: obj.ValueSpecStock,
 							header21: obj.AreaMRP,
 							header22: obj.WithNoMRP
-						
+
 						};
 						aLinesH.push(t);
 					}
@@ -219,6 +219,43 @@ sap.ui.define([
 						aLinesH.push(t);
 					}
 					that.emptyAndFillTable(titleArray, aLinesH);
+				} else if (name === "SESSION_RECORD.txt") {
+					console.log("Session record detected!");
+					titleArray = ["Batch Input Interface Record Type", "Group name: Batch input session name", "Client",
+						"Queue user ID / for historical reasons", "Queue start date",
+						"Indicator: Keep Batch Input Session After Processing ?", "No Batch Input Exists for this Field"
+					];
+
+					for (let line of array) {
+						// splitst element uit array op tab
+						line = line.split("\t");
+						// line is nu 1 regel uit het bestand, en met elk veld uit die regel vul je een object op
+						let temp = {
+							STYPE: line[0],
+							GROUP: line[1],
+							MANDT: line[2],
+							USNAM: line[3],
+							START: line[4],
+							XKEEP: line[5],
+							NODATA: line[6]
+						};
+						// push dit object lines naar een array 'aLines'
+						aLines.push(temp);
+					}
+					// loop de objecten over array
+					for (let obj of aLines) {
+						let t = {
+							header1: obj.STYPE,
+							header2: obj.GROUP,
+							header3: obj.MANDT,
+							header4: obj.USNAM,
+							header5: obj.START,
+							header6: obj.XKEEP,
+							header7: obj.NODATA
+						};
+						aLinesH.push(t);
+					}
+					that.emptyAndFillTable(titleArray, aLinesH);
 				}
 			};
 			reader.readAsText(file);
@@ -257,8 +294,8 @@ sap.ui.define([
 			let oRecordModel = this.getModel("RecordModel").getData();
 			let aConvertedItems = [];
 
-			console.log("[" + window.name + "] CHARACTERISTIC_DATA pushing to backend...");
 			if (window.name === "CHARACTERISTIC_DATA.txt") {
+				console.log("[" + window.name + "] CHARACTERISTIC_DATA pushing to backend...");
 				aConvertedItems.push(oRecordModel);
 
 				oPostModel.Matnr = oRecordModel.Matnr;
@@ -273,7 +310,7 @@ sap.ui.define([
 				debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
-				this._postData("/Session_records", oPostModel).
+				this._postData("/Characteristic_datas", oPostModel).
 				then((oData) => {
 						if (oData.Matnr !== "") {
 							var oDialog = new sap.m.Dialog({
@@ -282,7 +319,7 @@ sap.ui.define([
 								type: "Message",
 								state: "Success",
 								content: new sap.m.Text({
-									text: `Session record data with material number #${oData.Matnr} successfully created in back-end`
+									text: `Characteristic data with material number #${oData.Matnr} successfully created in back-end`
 								}),
 								endButton: new sap.m.Button({
 									text: "OK",
@@ -307,6 +344,7 @@ sap.ui.define([
 						this.getView().setBusy(false);
 					});
 			} else if (window.name === "SCHEDULE_LINE_DATA.txt") {
+				console.log("[" + window.name + "] SCHEDULE_LINE_DATA pushing to backend...");
 				aConvertedItems.push(oRecordModel);
 
 				oPostModel.Matnr = oRecordModel.Matnr;
@@ -372,7 +410,8 @@ sap.ui.define([
 				oPostModel.WorkBrkdwnStructElement = oRecordModel.WorkBrkdwnStructElement;
 				oPostModel.ItemNrSO = oRecordModel.ItemNrSO;
 				oPostModel.NrSO = oRecordModel.NrSO;
-				oPostModel.RefTypeDate = oRecordModel.RefTypeDate;
+				oPostModel.RefType = oRecordModel.RefType;
+				oPostModel.date = oRecordModel.date;
 				oPostModel.Time = oRecordModel.Time;
 				oPostModel.ValueSpecStock = oRecordModel.ValueSpecStock;
 				oPostModel.AreaMRP = oRecordModel.AreaMRP;
@@ -413,6 +452,54 @@ sap.ui.define([
 						this._handleError(oError);
 						this.getView().setBusy(false);
 					});
+			} else if (window.name === "SESSION_RECORD.txt") {
+				console.log("[" + window.name + "] SESSION_RECORD pushing to backend...");
+				aConvertedItems.push(oRecordModel);
+
+				oPostModel.STYPE = oRecordModel.STYPE;
+				oPostModel.GROUP = oRecordModel.GROUP;
+				oPostModel.MANDT = oRecordModel.MANDT;
+				oPostModel.USNAM = oRecordModel.USNAM;
+				oPostModel.START = oRecordModel.START;
+				oPostModel.XKEEP = oRecordModel.XKEEP;
+				oPostModel.NODATA = oRecordModel.NODATA;
+				debugger;
+				oPostModel.toItems = aConvertedItems;
+				this.getView().setBusy(true);
+				this._postData("/Session_records", oPostModel).
+				then((oData) => {
+						if (oData.STYPE !== "") {
+							var oDialog = new sap.m.Dialog({
+								id: "genericDialog",
+								title: "Success",
+								type: "Message",
+								state: "Success",
+								content: new sap.m.Text({
+									text: "Session record data successfully created in back-end"
+								}),
+								endButton: new sap.m.Button({
+									text: "OK",
+									press: () => {
+										oDialog.close();
+										this.clearModel();
+									}
+								}),
+								afterClose: function () {
+									oDialog.destroy();
+								}
+							});
+							oDialog.open();
+							this.getView().setBusy(false);
+						} else {
+							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							this.getView().setBusy(false);
+						}
+					})
+					.catch((oError) => {
+						this._handleError(oError);
+						this.getView().setBusy(false);
+					});
+
 			}
 		}
 	});
