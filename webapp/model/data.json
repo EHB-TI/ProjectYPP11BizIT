@@ -1,0 +1,62 @@
+{
+	"data": {
+		"CHARACTERISTIC_DATA": {
+			"MATNR": "",
+			"STYPE": "",
+			"PDATU": "",
+			"CLINT": "",
+			"LNPOS": "",
+			"EWAHR": "",
+			"FLGFX": "",
+			"FLGUB": "",
+			"FLGWA": ""
+
+		},
+
+		"ITEM_DATA": {
+			"STYPE": "",
+			"MATNR": "",
+			"BEDAE": "",
+			"VERSB": "",
+			"VERVS": "",
+			"PBDNR": "",
+			"WERKS": "",
+			"MCINC": "",
+			"STFNA": "",
+			"VRSIC": "",
+			"KNTTP": "",
+			"SOBKZ": "",
+			"KZVBR": "",
+			"PSPEL": "",
+			"KDPOS": "",
+			"KDAUF": "",
+			"APROG": "",
+			"DATLP": "",
+			"UHRLP": "",
+			"KZBWS": "",
+			"BERID": "",
+			"OPLKZ": ""
+
+		},
+
+		"SCHEDULE_LINE_DATA": {
+			"MATNR": "",
+			"STYPE": "",
+			"ENTLU": "",
+			"EDATU": "",
+			"PLNMG": "",
+			"SERNR": "",
+			"VERID": ""
+		},
+
+		"SESSION_RECORD": {
+			"STYPE": "",
+			"GROUP": "",
+			"MANDT": "",
+			"USNAM": "",
+			"START": "",
+			"XKEEP": "",
+			"NODATA": ""
+		}
+	}
+}
