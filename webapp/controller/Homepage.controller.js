@@ -15,27 +15,48 @@ sap.ui.define([
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
-		onpresschange: function (oEvent) {
-			let oFile = oEvent.getParameter("files")[0];
-			this.setupTable(oFile);
-		},
 		onLoadFileModel: function (aLines) {
 			this.getView().getModel("FileModel").setProperty("/lines", aLines);
 		},
-		emptyAndFillTable: function (titleArray, aLinesH) {
+		onpresschange: function (oEvent) {
 			let visModel = this.getView().getModel("visModel");
-			let aLinesEmpty = [];
 			let headerTitles = $(".label");
+			let oFile = oEvent.getParameter("files")[0];
 
-			// empty the table headers & table after showing all rows  
-			for (let f = 0; f < headerTitles.length; f++) {
-				visModel.setProperty("/row" + String(f), true);
+			// if something has been uploaded AND a full header span is detected THEN empty and show all columns before filling table again
+			if (window.uploadedAlready) {
+				for (let f = 0; f < headerTitles.length; f++) {
+					if (headerTitles[f].innerText !== "" || headerTitles[f].innerHTML !== "") {
+						console.log("Table full already, emptying table first...");
+						this.emptyTable(window.titleArray);
+
+						console.log("All table columns are now visible.");
+						for (let f1 = 0; f1 < headerTitles.length; f1++) {
+							visModel.setProperty("/row" + String(f), true);
+						}
+					}
+				}
 			}
+			console.log("[*] Now starting to fill table!");
+			this.setupTable(oFile);
+		},
+		emptyTable: function (titleArray) {
+			let headerTitles = $(".label");
+			let aLinesEmpty = [];
+
+			// empty table headers
 			for (let i1 = 0; i1 < titleArray.length; i1++) {
 				headerTitles[i1].innerHTML = "";
 			}
+			// empty table
 			this.getView().getModel("FileModel").setData(aLinesEmpty);
 			this.onLoadFileModel(aLinesEmpty);
+			console.log("[*] Table has been emptied successfully!");
+		},
+		fillTableHideCol: function (titleArray, aLinesH) {
+			let visModel = this.getView().getModel("visModel");
+			let headerTitles = $(".label");
+
 			// fill in table headers
 			for (let i2 = 0; i2 < titleArray.length; i2++) {
 				headerTitles[i2].innerHTML = titleArray[i2];
@@ -43,6 +64,8 @@ sap.ui.define([
 			// fill in table with data
 			this.getView().getModel("FileModel").setData(aLinesH);
 			this.onLoadFileModel(aLinesH);
+			console.log("[*] Table has been filled successfully!");
+
 			// search for empty header span, then hide corresponding parent columns 
 			for (let f = 0; f < headerTitles.length; f++) {
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
@@ -50,6 +73,7 @@ sap.ui.define([
 					visModel.setProperty("/row" + String(f), false);
 				}
 			}
+			console.log("[*] Unnecessary columns hidden successfully!");
 		},
 		setupTable: function (file) {
 			console.log("setupTable has been loaded!");
@@ -66,11 +90,13 @@ sap.ui.define([
 
 				let aLines = [];
 				let aLinesH = [];
-				let titleArray = [];
+				window.titleArray = [];
+				window.uploadedAlready = false;
 
 				if (name === "SCHEDULE_LINE_DATA.txt") {
 					console.log("Schedule line data detected!");
-					titleArray = ["Material Number", "Batch Input Interface Record Type", "Period indicator (day, week, month, posting period)",
+					window.titleArray = ["Material Number", "Batch Input Interface Record Type",
+						"Period indicator (day, week, month, posting period)",
 						"Schedule line date", "Planned quantity batch input", "BOM explosion number", "Production Version",
 						"Offset for generation of test data"
 					];
@@ -106,10 +132,11 @@ sap.ui.define([
 						};
 						aLinesH.push(t);
 					}
-					that.emptyAndFillTable(titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray, aLinesH);
+					window.uploadedAlready = true;
 				} else if (name === "ITEM_DATA.txt") {
 					console.log("Item data detected!");
-					titleArray = ["Batch Input Interface Record Type", "Material Number", "Requirements type",
+					window.titleArray = ["Batch Input Interface Record Type", "Material Number", "Requirements type",
 						"Version number for independent requirements", "Indicator: version active", "Requirements Plan Number", "Plant",
 						"Name of info structure - characteristic ", "Field name in the generated DDIC structure",
 						"Version number in the information structure", "Account Assignment Category", "Special Stock Indicator",
@@ -177,11 +204,12 @@ sap.ui.define([
 						};
 						aLinesH.push(t);
 					}
-					that.emptyAndFillTable(titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray, aLinesH);
+					window.uploadedAlready = true;
 				} else if (name === "CHARACTERISTIC_DATA.txt") {
 					console.log("Characteristic data detected!");
-					titleArray = ["Material Number", "Batch Input Interface Record Type", "Delivery/order finish date", "Internal Class Number",
-						"Row Number of Variant Table - External", "Usage Probability in Character Format", "Fixing indicator",
+					window.titleArray = ["Material Number", "Batch Input Interface Record Type", "Delivery/order finish date",
+						"Internal Class Number", "Row Number of Variant Table - External", "Usage Probability in Character Format", "Fixing indicator",
 						"Copying firmed objects allowed", "Indicator = 'X' quantity / indicator = ' ' usage probability"
 					];
 
@@ -218,12 +246,13 @@ sap.ui.define([
 						};
 						aLinesH.push(t);
 					}
-					that.emptyAndFillTable(titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray, aLinesH);
+					window.uploadedAlready = true;
 				} else if (name === "SESSION_RECORD.txt") {
 					console.log("Session record detected!");
-					titleArray = ["Batch Input Interface Record Type", "Group name: Batch input session name", "Client",
-						"Queue user ID / for historical reasons", "Queue start date",
-						"Indicator: Keep Batch Input Session After Processing ?", "No Batch Input Exists for this Field"
+					window.titleArray = ["Batch Input Interface Record Type", "Group name: Batch input session name", "Client",
+						"Queue user ID / for historical reasons", "Queue start date", "Indicator: Keep Batch Input Session After Processing ?",
+						"No Batch Input Exists for this Field"
 					];
 
 					for (let line of array) {
@@ -255,12 +284,14 @@ sap.ui.define([
 						};
 						aLinesH.push(t);
 					}
-					that.emptyAndFillTable(titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray, aLinesH);
+					window.uploadedAlready = true;
 				}
 			};
 			reader.readAsText(file);
 		},
 		/*
+		 <--POST GEDEELTE NAAR BACKEND-->
 		 * @param {that} the view
 		 * @param {serviceExtend} the path to the specific entitie set
 		 * @param {oPayload} the payload that needs to be POSTed
