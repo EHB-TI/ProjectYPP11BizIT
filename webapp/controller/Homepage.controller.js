@@ -17,43 +17,52 @@ sap.ui.define([
 		},
 		onpresschange: function (oEvent) {
 			let oFile = oEvent.getParameter("files")[0];
-			this.setup_table(oFile);
+			this.setupTable(oFile);
 		},
 		onLoadFileModel: function (aLines) {
 			this.getView().getModel("FileModel").setProperty("/lines", aLines);
 		},
 		emptyAndFillTable: function (titleArray, aLinesH) {
+			let visModel = this.getView().getModel("visModel");
 			let aLinesEmpty = [];
 			let headerTitles = $(".label");
-			// let cols = $("tbody>tr>td.sapUiTableHeaderCell");
-			let cols = $(".col");
 
-			// Leegmaken van table
+			// empty the table, show all rows and empty table headers
+			this.getView().getModel("FileModel").setData(aLinesEmpty);
+			this.onLoadFileModel(aLinesEmpty);
+			for (let f = 0; f < headerTitles.length; f++) {
+				visModel.setProperty("/row" + String(f), true);
+			}
 			for (let i1 = 0; i1 < titleArray.length; i1++) {
 				headerTitles[i1].innerHTML = "";
 			}
-			this.getView().getModel("FileModel").setData(aLinesEmpty);
-			this.onLoadFileModel(aLinesEmpty);
 
-			// Opvullen van table
+			// fill in table headers
 			for (let i2 = 0; i2 < titleArray.length; i2++) {
 				headerTitles[i2].innerHTML = titleArray[i2];
 			}
+			// fill in data and put visibility on true for all columns
 			this.getView().getModel("FileModel").setData(aLinesH);
 			this.onLoadFileModel(aLinesH);
-
-			// Kolommen resizen
+			for (let f = 0; f < headerTitles.length; f++) {
+				visModel.setProperty("/row" + String(f), true);
+			}
+			// search for empty header span, then hide corresponding parent columns with empty headers
 			for (let f = 0; f < headerTitles.length; f++) {
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
-					console.log("Empty header found, now cleaning: #" + f);
-					//cols[f].setVisible(false);
-					//debugger;
+					console.log("Empty header #" + f);
+					visModel.setProperty("/row" + String(f), false);
 				}
 			}
+			// fill in table headers
+			for (let i2 = 0; i2 < titleArray.length; i2++) {
+				headerTitles[i2].innerHTML = titleArray[i2];
+			}
 		},
-		setup_table: function (file) {
-			console.log("setup_table has been loaded!");
+		setupTable: function (file) {
+			console.log("setupTable has been loaded!");
 			let name = file.name;
+			window.name = name;
 			console.log(name);
 			let reader = new FileReader();
 			let that = this;
@@ -253,8 +262,8 @@ sap.ui.define([
 			let oRecordModel = this.getModel("RecordModel").getData();
 			let aConvertedItems = [];
 
-			console.log("[" + name + "] Session record pushing to backend...")
-			if (name === "SESSION_RECORD.txt") {
+			console.log("[" + window.name + "] Session record pushing to backend...");
+			if (window.name === "SESSION_RECORD.txt") {
 				aConvertedItems.push(oRecordModel);
 
 				oPostModel.Matnr = oRecordModel.Matnr;
@@ -302,9 +311,9 @@ sap.ui.define([
 						this._handleError(oError);
 						this.getView().setBusy(false);
 					});
-			} else if (name === "SCHEDULE_LINE_DATA.txt") {
+			} else if (window.name === "SCHEDULE_LINE_DATA.txt") {
 				// hier dupe van vorige 
-			} else if (name === "ITEM_DATA.txt") {
+			} else if (window.name === "ITEM_DATA.txt") {
 				// hier dupe van vorige 
 			}
 		}
