@@ -27,13 +27,12 @@ sap.ui.define([
 			if (window.uploadedAlready) {
 				for (let f = 0; f < headerTitles.length; f++) {
 					if (headerTitles[f].innerText !== "" || headerTitles[f].innerHTML !== "") {
-						console.log("Table full already, emptying table first...");
-						this.emptyTable(window.titleArray);
-
 						console.log("All table columns are now visible.");
 						for (let f1 = 0; f1 < headerTitles.length; f1++) {
 							visModel.setProperty("/row" + String(f), true);
 						}
+						console.log("Table full already, emptying table first...");
+						this.emptyTable(window.titleArray);
 					}
 				}
 			}
@@ -53,19 +52,18 @@ sap.ui.define([
 			this.onLoadFileModel(aLinesEmpty);
 			console.log("[*] Table has been emptied successfully!");
 		},
-		fillTableHideCol: function (titleArray, aLinesH) {
+		fillTableHideCol: function (titleArray) {
 			let visModel = this.getView().getModel("visModel");
 			let headerTitles = $(".label");
 
+			// fill in table with data
+			this.getView().getModel("FileModel").setData(window.aLinesH);
+			this.onLoadFileModel(window.aLinesH);
+			console.log("[*] Table has been filled successfully!");
 			// fill in table headers
 			for (let i2 = 0; i2 < titleArray.length; i2++) {
 				headerTitles[i2].innerHTML = titleArray[i2];
 			}
-			// fill in table with data
-			this.getView().getModel("FileModel").setData(aLinesH);
-			this.onLoadFileModel(aLinesH);
-			console.log("[*] Table has been filled successfully!");
-
 			// search for empty header span, then hide corresponding parent columns 
 			for (let f = 0; f < headerTitles.length; f++) {
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
@@ -89,7 +87,7 @@ sap.ui.define([
 				console.log("Array: " + array);
 
 				let aLines = [];
-				let aLinesH = [];
+				window.aLinesH = [];
 				window.titleArray = [];
 				window.uploadedAlready = false;
 
@@ -130,9 +128,9 @@ sap.ui.define([
 							header7: obj.ProductionV,
 							header8: obj.Offset
 						};
-						aLinesH.push(t);
+						window.aLinesH.push(t);
 					}
-					that.fillTableHideCol(window.titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray);
 					window.uploadedAlready = true;
 				} else if (name === "ITEM_DATA.txt") {
 					console.log("Item data detected!");
@@ -202,9 +200,9 @@ sap.ui.define([
 							header22: obj.WithNoMRP
 
 						};
-						aLinesH.push(t);
+						window.aLinesH.push(t);
 					}
-					that.fillTableHideCol(window.titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray);
 					window.uploadedAlready = true;
 				} else if (name === "CHARACTERISTIC_DATA.txt") {
 					console.log("Characteristic data detected!");
@@ -244,9 +242,9 @@ sap.ui.define([
 							header8: obj.CopyingFirmedObjAllowed,
 							header9: obj.QuantityIndicUsageProb
 						};
-						aLinesH.push(t);
+						window.aLinesH.push(t);
 					}
-					that.fillTableHideCol(window.titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray);
 					window.uploadedAlready = true;
 				} else if (name === "SESSION_RECORD.txt") {
 					console.log("Session record detected!");
@@ -282,16 +280,16 @@ sap.ui.define([
 							header6: obj.XKEEP,
 							header7: obj.NODATA
 						};
-						aLinesH.push(t);
+						window.aLinesH.push(t);
 					}
-					that.fillTableHideCol(window.titleArray, aLinesH);
+					that.fillTableHideCol(window.titleArray);
 					window.uploadedAlready = true;
 				}
 			};
 			reader.readAsText(file);
 		},
 		/*
-		 <--POST GEDEELTE NAAR BACKEND-->
+		 POST GEDEELTE NAAR BACKEND
 		 * @param {that} the view
 		 * @param {serviceExtend} the path to the specific entitie set
 		 * @param {oPayload} the payload that needs to be POSTed
@@ -338,7 +336,6 @@ sap.ui.define([
 				oPostModel.FixingIndic = oRecordModel.FixingIndic;
 				oPostModel.CopyingFirmedObjAllowed = oRecordModel.CopyingFirmedObjAllowed;
 				oPostModel.QuantityIndicUsageProb = oRecordModel.QuantityIndicUsageProb;
-				debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
 				this._postData("/Characteristic_datas", oPostModel).
@@ -350,7 +347,7 @@ sap.ui.define([
 								type: "Message",
 								state: "Success",
 								content: new sap.m.Text({
-									text: `Characteristic data with material number #${oData.Matnr} successfully created in back-end`
+									text: `Characteristic data with material number #${oData.Matnr} successfully created in backend`
 								}),
 								endButton: new sap.m.Button({
 									text: "OK",
@@ -366,7 +363,7 @@ sap.ui.define([
 							oDialog.open();
 							this.getView().setBusy(false);
 						} else {
-							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							console.log("[Error] Er werd geen data naar de backend doorgestuurd, probeer opnieuw.");
 							this.getView().setBusy(false);
 						}
 					})
@@ -386,7 +383,6 @@ sap.ui.define([
 				oPostModel.Bom = oRecordModel.Bom;
 				oPostModel.ProductionV = oRecordModel.ProductionV;
 				oPostModel.Offset = oRecordModel.Offset;
-				debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
 				this._postData("/Scheduleline_datas", oPostModel).
@@ -398,7 +394,7 @@ sap.ui.define([
 								type: "Message",
 								state: "Success",
 								content: new sap.m.Text({
-									text: `Schedule line data with material number #${oData.Matnr} successfully created in back-end`
+									text: `Schedule line data with material number #${oData.Matnr} successfully created in backend`
 								}),
 								endButton: new sap.m.Button({
 									text: "OK",
@@ -414,7 +410,7 @@ sap.ui.define([
 							oDialog.open();
 							this.getView().setBusy(false);
 						} else {
-							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							console.log("[Error] Er werd geen data naar de backend doorgestuurd, probeer opnieuw.");
 							this.getView().setBusy(false);
 						}
 					})
@@ -447,7 +443,6 @@ sap.ui.define([
 				oPostModel.ValueSpecStock = oRecordModel.ValueSpecStock;
 				oPostModel.AreaMRP = oRecordModel.AreaMRP;
 				oPostModel.WithNoMRP = oRecordModel.WithNoMRP;
-				debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
 				this._postData("/Item_datas", oPostModel).
@@ -459,7 +454,7 @@ sap.ui.define([
 								type: "Message",
 								state: "Success",
 								content: new sap.m.Text({
-									text: `Item data with material number #${oData.Matnr} successfully created in back-end`
+									text: `Item data with material number #${oData.Matnr} successfully created in backend`
 								}),
 								endButton: new sap.m.Button({
 									text: "OK",
@@ -475,7 +470,7 @@ sap.ui.define([
 							oDialog.open();
 							this.getView().setBusy(false);
 						} else {
-							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							console.log("[Error] Er werd geen data naar de backend doorgestuurd, probeer opnieuw.");
 							this.getView().setBusy(false);
 						}
 					})
@@ -494,7 +489,6 @@ sap.ui.define([
 				oPostModel.START = oRecordModel.START;
 				oPostModel.XKEEP = oRecordModel.XKEEP;
 				oPostModel.NODATA = oRecordModel.NODATA;
-				debugger;
 				oPostModel.toItems = aConvertedItems;
 				this.getView().setBusy(true);
 				this._postData("/Session_records", oPostModel).
@@ -506,7 +500,7 @@ sap.ui.define([
 								type: "Message",
 								state: "Success",
 								content: new sap.m.Text({
-									text: "Session record data successfully created in back-end"
+									text: "Session record data successfully created in backend"
 								}),
 								endButton: new sap.m.Button({
 									text: "OK",
@@ -522,7 +516,7 @@ sap.ui.define([
 							oDialog.open();
 							this.getView().setBusy(false);
 						} else {
-							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							console.log("[Error] Er werd geen data naar de backend doorgestuurd, probeer opnieuw.");
 							this.getView().setBusy(false);
 						}
 					})
