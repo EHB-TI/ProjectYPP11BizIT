@@ -27,36 +27,28 @@ sap.ui.define([
 			let aLinesEmpty = [];
 			let headerTitles = $(".label");
 
-			// empty the table, show all rows and empty table headers
-			this.getView().getModel("FileModel").setData(aLinesEmpty);
-			this.onLoadFileModel(aLinesEmpty);
+			// empty the table headers & table after showing all rows  
 			for (let f = 0; f < headerTitles.length; f++) {
 				visModel.setProperty("/row" + String(f), true);
 			}
 			for (let i1 = 0; i1 < titleArray.length; i1++) {
 				headerTitles[i1].innerHTML = "";
 			}
-
+			this.getView().getModel("FileModel").setData(aLinesEmpty);
+			this.onLoadFileModel(aLinesEmpty);
 			// fill in table headers
 			for (let i2 = 0; i2 < titleArray.length; i2++) {
 				headerTitles[i2].innerHTML = titleArray[i2];
 			}
-			// fill in data and put visibility on true for all columns
+			// fill in table with data
 			this.getView().getModel("FileModel").setData(aLinesH);
 			this.onLoadFileModel(aLinesH);
-			for (let f = 0; f < headerTitles.length; f++) {
-				visModel.setProperty("/row" + String(f), true);
-			}
-			// search for empty header span, then hide corresponding parent columns with empty headers
+			// search for empty header span, then hide corresponding parent columns 
 			for (let f = 0; f < headerTitles.length; f++) {
 				if (headerTitles[f].innerText === "" || headerTitles[f].innerHTML === "") {
 					console.log("Empty header #" + f);
 					visModel.setProperty("/row" + String(f), false);
 				}
-			}
-			// fill in table headers
-			for (let i2 = 0; i2 < titleArray.length; i2++) {
-				headerTitles[i2].innerHTML = titleArray[i2];
 			}
 		},
 		setupTable: function (file) {
@@ -312,9 +304,112 @@ sap.ui.define([
 						this.getView().setBusy(false);
 					});
 			} else if (window.name === "SCHEDULE_LINE_DATA.txt") {
-				// hier dupe van vorige 
+				aConvertedItems.push(oRecordModel);
+
+				oPostModel.Matnr = oRecordModel.Matnr;
+				oPostModel.BatchRt = oRecordModel.BatchRt;
+				oPostModel.PeriodIndicator = oRecordModel.PeriodIndicator;
+				oPostModel.ScheduleLineDate = oRecordModel.ScheduleLineDate;
+				oPostModel.PlannedQuantity = oRecordModel.PlannedQuantity;
+				oPostModel.Bom = oRecordModel.Bom;
+				oPostModel.ProductionV = oRecordModel.ProductionV;
+				oPostModel.Offset = oRecordModel.Offset;
+				debugger;
+				oPostModel.toItems = aConvertedItems;
+				this.getView().setBusy(true);
+				this._postData("/Scheduleline_datas", oPostModel).
+				then((oData) => {
+						if (oData.Matnr !== "") {
+							var oDialog = new sap.m.Dialog({
+								id: "genericDialog",
+								title: "Success",
+								type: "Message",
+								state: "Success",
+								content: new sap.m.Text({
+									text: `Schedule line data with material number #${oData.Matnr} successfully created in back-end`
+								}),
+								endButton: new sap.m.Button({
+									text: "OK",
+									press: () => {
+										oDialog.close();
+										this.clearModel();
+									}
+								}),
+								afterClose: function () {
+									oDialog.destroy();
+								}
+							});
+							oDialog.open();
+							this.getView().setBusy(false);
+						} else {
+							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							this.getView().setBusy(false);
+						}
+					})
+					.catch((oError) => {
+						this._handleError(oError);
+						this.getView().setBusy(false);
+					});
 			} else if (window.name === "ITEM_DATA.txt") {
-				// hier dupe van vorige 
+				aConvertedItems.push(oRecordModel);
+
+				oPostModel.BatchInputIRT = oRecordModel.BatchInputIRT;
+				oPostModel.MatNr = oRecordModel.MatNr;
+				oPostModel.ReqType = oRecordModel.ReqType;
+				oPostModel.VersionNr = oRecordModel.VersionNr;
+				oPostModel.Indicator = oRecordModel.Indicator;
+				oPostModel.ReqPlanNr = oRecordModel.ReqPlanNr;
+				oPostModel.Plant = oRecordModel.Plant;
+				oPostModel.NameInfoStructChar = oRecordModel.NameInfoStructChar;
+				oPostModel.FieldNameGenDDICStruct = oRecordModel.FieldNameGenDDICStruct;
+				oPostModel.VersionNrInfoStruct = oRecordModel.VersionNrInfoStruct;
+				oPostModel.AccAssignmentCat = oRecordModel.AccAssignmentCat;
+				oPostModel.SpecialStockIndic = oRecordModel.SpecialStockIndic;
+				oPostModel.ConsumpPost = oRecordModel.ConsumpPost;
+				oPostModel.WorkBrkdwnStructElement = oRecordModel.WorkBrkdwnStructElement;
+				oPostModel.ItemNrSO = oRecordModel.ItemNrSO;
+				oPostModel.NrSO = oRecordModel.NrSO;
+				oPostModel.RefTypeDate = oRecordModel.RefTypeDate;
+				oPostModel.Time = oRecordModel.Time;
+				oPostModel.ValueSpecStock = oRecordModel.ValueSpecStock;
+				oPostModel.AreaMRP = oRecordModel.AreaMRP;
+				oPostModel.WithNoMRP = oRecordModel.WithNoMRP;
+				debugger;
+				oPostModel.toItems = aConvertedItems;
+				this.getView().setBusy(true);
+				this._postData("/Item_datas", oPostModel).
+				then((oData) => {
+						if (oData.Matnr !== "") {
+							var oDialog = new sap.m.Dialog({
+								id: "genericDialog",
+								title: "Success",
+								type: "Message",
+								state: "Success",
+								content: new sap.m.Text({
+									text: `Item data with material number #${oData.Matnr} successfully created in back-end`
+								}),
+								endButton: new sap.m.Button({
+									text: "OK",
+									press: () => {
+										oDialog.close();
+										this.clearModel();
+									}
+								}),
+								afterClose: function () {
+									oDialog.destroy();
+								}
+							});
+							oDialog.open();
+							this.getView().setBusy(false);
+						} else {
+							console.log("[Error] Er werd geen data naar de back-end doorgestuurd, probeer opnieuw.");
+							this.getView().setBusy(false);
+						}
+					})
+					.catch((oError) => {
+						this._handleError(oError);
+						this.getView().setBusy(false);
+					});
 			}
 		}
 	});
